@@ -22,9 +22,10 @@ exports.register= async (req,res,next)=>{
 
         const user = await User.create({
             name,
+            telephone,
             email,
             password,
-            telephone
+           
         });
 
         //const token = user.getSignedJwtToken();
