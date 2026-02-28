@@ -1,5 +1,5 @@
-const Hospital = require('../models/Shop.js');
-const Appointment = require('../models/Reservation.js');
+//const Hospital = require('../models/Shop.js');
+//const Appointment = require('../models/Reservation.js');
 const Reservation = require('../models/Reservation.js');
 const Shop = require('../models/Shop.js');
 exports.getShops = async (req, res, next) => {
@@ -19,7 +19,7 @@ exports.getShops = async (req, res, next) => {
     let queryStr = JSON.stringify(reqQuery);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g,match=>`$${match}`);
 
-    query = Hospital.find(JSON.parse(queryStr)).populate('appointments');
+    query = Shop.find(JSON.parse(queryStr)).populate('reservations');
 
     //select fields
     if(req.query.select){
@@ -40,13 +40,13 @@ exports.getShops = async (req, res, next) => {
     const limit = parseInt(req.query.limit,10)||25;
     const startIndex=(page-1)*limit;
     const endIndex = page*limit;
-    const total = await Hospital.countDocuments();
+    const total = await Shop.countDocuments();
 
     query=query.skip(startIndex).limit(limit);
 
     try{
     
-        const  hospitals = await query;
+        const  shops = await query;
         const pagination ={};
         if(endIndex < total){
             pagination.next={
@@ -61,7 +61,7 @@ exports.getShops = async (req, res, next) => {
 
             }
         }
-         res.status(200).json({ success: true,count:hospitals.length,pagination, data:hospitals });
+         res.status(200).json({ success: true,count:shops.length,pagination, data:shops });
 
     }catch(err){
         res.status(400).json({success:false});
@@ -98,7 +98,7 @@ exports.updateShop = async(req, res, next) => {
             return res.status(400).json({success:false});
         }
 
-        res.status(200).json({success:true,data:hospital});
+        res.status(200).json({success:true,data : shop});
     }catch(err){
         res.status(400).json({success:false});
     }
@@ -106,16 +106,16 @@ exports.updateShop = async(req, res, next) => {
 
 exports.deleteShop = async(req, res, next) => {
    try{
-     const hospital = await Hospital.findById(req.params.id);
+     const shop = await Shop.findById(req.params.id);
 
-if (!hospital) {
+if (!shop) {
     return res.status(404).json({
         success: false,
-        message: `Hospital not found with id of ${req.params.id}`
+        message: `MassageShop not found with id of ${req.params.id}`
     });
 }
 
-await Reservation.deleteMany({ hospital: req.params.id });
+await Reservation.deleteMany({ shop: req.params.id });
 await Shop.deleteOne({ _id: req.params.id });
 
 res.status(200).json({
