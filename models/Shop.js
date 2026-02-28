@@ -30,10 +30,10 @@ closeTime :{
 
 //Reverse populate with virsual
 ShopSchema.virtual('reservations',{
-  ref:'MassageShop',
+  ref:'Shop',
   localField:'_id',
   foreignField:'shop',  
   justOne:false
 });
 
-module.exports = mongoose.model('MassageShop', ShopSchema);
+module.exports = mongoose.model('Shop', ShopSchema);

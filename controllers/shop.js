@@ -1,4 +1,4 @@
-const Hospital = require('../models/MassageShop.js');
+const Hospital = require('../models/Shop.js');
 const Appointment = require('../models/Reservation.js');
 exports.getHospitals = async (req, res, next) => {
 

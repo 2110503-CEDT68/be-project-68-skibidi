@@ -1,13 +1,13 @@
 const Appointment = require('../models/Reservation');
-const Hospital = require('../models/MassageShop');
+const Hospital = require('../models/Shop');
 const { patch } = require('../routes/reservations');
 
-exports.getAppointments = async (req, res, next) => {
+exports.get = async (req, res, next) => {
     let query;
 
     if (req.user.role !== 'admin') {
         query = Appointment.find({ user: req.user.id }).populate({
-            path: 'hospital',
+            path: 'MassageShop',
             select: 'name province tel'
         });
 
