@@ -1,6 +1,6 @@
 const Reservation = require('../models/Reservation');
 const Shop = require('../models/Shop');
-const { patch } = require('../routes/reservations');
+//const { patch } = require('../routes/reservations');
 
 exports.getReservations = async (req, res, next) => {
     let query;
