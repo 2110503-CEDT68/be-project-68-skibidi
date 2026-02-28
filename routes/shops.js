@@ -2,7 +2,7 @@
 
 const express = require('express');
 
-const {getHospitals,getHospital,createHospital,updateHospital,deleteHospital} =require('../controllers/shop');
+const {getHospitals,getHospital,createHospital,updateHospital,deleteHospital} =require('../controllers/shops');
 
 //include other resource routers
 const appointmentRouter = require('./reservations');
