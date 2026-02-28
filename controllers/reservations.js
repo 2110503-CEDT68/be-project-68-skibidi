@@ -50,6 +50,9 @@ exports.getReservation = async(req,res,next)=>{
     const reservation = await Reservation.findById(req.params.id).populate({
         path: 'shop',
         select: 'name address telephone openTime closeTime'
+    }).populate({
+        path: 'masseuse',  
+        select: 'name'
     });
 
     if (!reservation) {
@@ -58,6 +61,12 @@ exports.getReservation = async(req,res,next)=>{
             message: `No reservation with the id of ${req.params.id}`
         });
     }
+
+     reservation = reservation.toObject();
+    if (!reservation.masseuse) {
+        reservation.masseuse = { name: "ไม่ระบุ" };
+    }
+
 
     res.status(200).json({
         success: true,
@@ -72,6 +81,7 @@ exports.getReservation = async(req,res,next)=>{
     });
 }
 };
+
 
 exports.addReservation = async(req,res,next)=>{
     try{
