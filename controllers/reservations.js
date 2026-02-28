@@ -1,6 +1,6 @@
-const Appointment = require('../models/Appointment');
+const Appointment = require('../models/Reservation');
 const Hospital = require('../models/MassageShop');
-const { patch } = require('../routes/appointments');
+const { patch } = require('../routes/reservations');
 
 exports.getAppointments = async (req, res, next) => {
     let query;

@@ -174,7 +174,7 @@ const express = require('express');
 const {getHospitals,getHospital,createHospital,updateHospital,deleteHospital} =require('../controllers/hospitals');
 
 //include other resource routers
-const appointmentRouter = require('./appointments');
+const appointmentRouter = require('./reservations');
 
 const router = express.Router();
 const{protect,authorize} = require('../middleware/auth');

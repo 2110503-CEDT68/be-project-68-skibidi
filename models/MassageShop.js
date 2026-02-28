@@ -29,8 +29,8 @@ closeTime :{
 });
 
 //Reverse populate with virsual
-ShopSchema.virtual('appointments',{
-  ref:'Appointment',
+ShopSchema.virtual('reservations',{
+  ref:'MassageShop',
   localField:'_id',
   foreignField:'shop',  
   justOne:false

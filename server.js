@@ -13,8 +13,8 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
 //Route files
-const hospitals = require('./routes/hospitals');
-const appointments = require('./routes/appointments');
+const hospitals = require('./routes/shops');
+const appointments = require('./routes/reservations');
 const auth = require('./routes/auth');
 
 //LOad env vars
