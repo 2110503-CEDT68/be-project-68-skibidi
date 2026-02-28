@@ -79,3 +79,63 @@ exports.deleteMasseuse = async (req,res)=>{
         res.status(500).json({success:false});
     }
 };
+
+exports.updateMasseuse = async (req,res)=>{
+    try{
+        const masseuse = await Masseuse.findById(req.params.id);
+
+        if(!masseuse){
+            return res.status(404).json({
+                success:false,
+                message:"No masseuse found"
+            });
+        }
+
+        if(req.user.role !== 'admin'){
+            return res.status(403).json({
+                success:false,
+                message:"You are not allowed to update masseuse"
+            });
+        }
+
+        const updateData = {};
+
+        if(req.body.telephone){
+            updateData.telephone = req.body.telephone;
+        }
+
+        if(req.body.shop){
+            const shop = await Shop.findById(req.body.shop);
+            if(!shop){
+                return res.status(404).json({
+                    success:false,
+                    message:"No shop found"
+                });
+            }
+
+            await Reservation.updateMany(
+            { masseuse: masseuse._id },
+            { $set: { masseuse: null } });
+            updateData.shop = req.body.shop;
+        }
+
+        const updated = await Masseuse.findByIdAndUpdate(
+            req.params.id,
+            updateData,
+            { new:true, runValidators:true }
+        ).populate({
+            path:'shop',
+            select:'name address'
+        });
+
+        res.status(200).json({
+            success:true,
+            data:updated,
+            message:`Masseuse : ${updated.name} updated`
+        });
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({success:false});
+    }
+};
