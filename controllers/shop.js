@@ -1,6 +1,8 @@
 const Hospital = require('../models/Shop.js');
 const Appointment = require('../models/Reservation.js');
-exports.getHospitals = async (req, res, next) => {
+const Reservation = require('../models/Reservation.js');
+const Shop = require('../models/Shop.js');
+exports.getShops = async (req, res, next) => {
 
     let query;
     //copy req.query
@@ -67,32 +69,32 @@ exports.getHospitals = async (req, res, next) => {
    
 };
 
-exports.getHospital = async (req, res, next) => {
+exports.getShop = async (req, res, next) => {
    try{
-    const hospital = await Hospital.findById(req.params.id);
+    const shop = await Shop.findById(req.params.id);
 
-    if(!hospital){
+    if(!shop){
         return  res.status(400).json({ success: false });
     }
 
-     res.status(200).json({ success: true, data : hospital });
+     res.status(200).json({ success: true, data : shop });
    }catch(err){
     res.status(400).json({success:false});
    }
 };
 
-exports.createHospital = (req, res, next) => {
+exports.createShop = (req, res, next) => {
     
-    res.status(200).json({ success: true, msg: 'Create new hospitals' });
+    res.status(200).json({ success: true, msg: 'Create new shops' });
 };
 
-exports.updateHospital = async(req, res, next) => {
+exports.updateShop = async(req, res, next) => {
     try{
-        const hospital = await Hospital.findByIdAndUpdate(req.params.id ,req.body,{
+        const shop = await Shop.findByIdAndUpdate(req.params.id ,req.body,{
             new : true,
             runValidators : true
         });
-        if(!hospital){
+        if(!shop){
             return res.status(400).json({success:false});
         }
 
@@ -113,8 +115,8 @@ if (!hospital) {
     });
 }
 
-await Appointment.deleteMany({ hospital: req.params.id });
-await Hospital.deleteOne({ _id: req.params.id });
+await Reservation.deleteMany({ hospital: req.params.id });
+await Shop.deleteOne({ _id: req.params.id });
 
 res.status(200).json({
     success: true,
@@ -125,7 +127,7 @@ res.status(200).json({
    }
 };
 
-exports.createHospital= async(reg,res,next)=>{
-    const hospital = await Hospital.create(reg.body);
-    res.status(201).json({success:true , data:hospital});
+exports.createShop= async(reg,res,next)=>{
+    const shop = await Shop.create(reg.body);
+    res.status(201).json({success:true , data:shop});
 };
