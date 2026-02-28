@@ -94,6 +94,27 @@ exports.addReservation = async(req,res,next)=>{
         
         //add userId to req.body
         req.body.user = req.user.id;
+        
+        //check mhor nuade
+        if(req.body.masseuse && req.body.masseuse !== "-"){
+            const masseuse = await Masseuse.findById(req.body.masseuse);
+
+            if(!masseuse){
+                return res.status(404).json({
+                    success:false,
+                    message:"No masseuse found"
+                });
+            }
+            if(masseuse.shop.toString() !== req.params.shopId){
+                return res.status(400).json({
+                    success:false,
+                    message:"Masseuse does not belong to this shop"
+                });
+            }
+
+        }else{
+            req.body.masseuse = null;
+        }
 
         //Check reservation
         const existedReservation = await Reservation.find({user:req.user.id});

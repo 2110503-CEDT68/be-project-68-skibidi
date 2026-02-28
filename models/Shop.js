@@ -36,4 +36,11 @@ ShopSchema.virtual('reservations',{
   justOne:false
 });
 
+ShopSchema.virtual('masseuses',{
+    ref:'Masseuse',
+    localField:'_id',
+    foreignField:'shop',
+    justOne:false
+});
+
 module.exports = mongoose.model('Shop', ShopSchema);

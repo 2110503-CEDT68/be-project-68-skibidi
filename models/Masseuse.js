@@ -5,6 +5,9 @@ const MasseuseSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  telephone:{
+        type:String
+    },
   shop: {
     type: mongoose.Schema.ObjectId,
     ref: 'Shop',

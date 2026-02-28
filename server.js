@@ -16,7 +16,7 @@ const swaggerUI = require('swagger-ui-express');
 const shops = require('./routes/shops');
 const reservations = require('./routes/reservations');
 const auth = require('./routes/auth');
-
+const masseuses = require('./routes/masseuses');
 //LOad env vars
 dotenv.config({ path: './config/config.env' });
 
@@ -37,7 +37,7 @@ app.use(helmet());
 app.use(xss());
 
 const limiter=rateLimit({
-    windowsMs:10*60*1000,//10 mins
+    windowMs:10*60*1000,//10 mins
     max: 100
 });
 
