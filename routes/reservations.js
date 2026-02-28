@@ -5,10 +5,10 @@ const router = express.Router({mergeParams:true});
 const {protect,authorize} =require('../middleware/auth');
 //router.route('/').get(getAppointments);
 
-router.route('/').get(protect,getAppointments)
-.post(protect,authorize('admin','user'),addAppointment);
+router.route('/').get(protect,getReservations)
+.post(protect,authorize('admin','user'),addReservations);
 
-router.route('/:id').get(protect,getAppointment)
-.put(protect,authorize('admin','user'),updateAppointment)
-.delete(protect,authorize('admin','user'),deleteAppointment);
+router.route('/:id').get(protect,getReservation)
+.put(protect,authorize('admin','user'),updateReservation)
+.delete(protect,authorize('admin','user'),deleteReservation);
 module.exports = router;
