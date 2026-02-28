@@ -18,13 +18,13 @@ const sendTokenResponse=(user,statusCode,res)=>{
 
 exports.register= async (req,res,next)=>{
     try{
-        const{name,email,password,role} = req.body;
+        const{name,email,password, telephone} = req.body;
 
         const user = await User.create({
             name,
             email,
             password,
-            role
+            telephone
         });
 
         //const token = user.getSignedJwtToken();
