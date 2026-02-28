@@ -1,5 +1,5 @@
 const Appointment = require('../models/Appointment');
-const Hospital = require('../models/Hospital');
+const Hospital = require('../models/MassageShop');
 const { patch } = require('../routes/appointments');
 
 exports.getAppointments = async (req, res, next) => {
