@@ -104,7 +104,7 @@ exports.updateShop = async(req, res, next) => {
     }
 };
 
-exports.deleteHospital = async(req, res, next) => {
+exports.deleteShop = async(req, res, next) => {
    try{
      const hospital = await Hospital.findById(req.params.id);
 
