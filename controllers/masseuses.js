@@ -3,6 +3,12 @@ const Shop = require('../models/Shop');
 const Reservation = require('../models/Reservation');
 
 exports.addMasseuse = async (req,res)=>{
+    if(req.user.role !== 'admin'){
+            return res.status(403).json({
+                success:false,
+                message:"You are not allowed to add masseuse"
+            });    
+    }
     try{
         req.body.shop = req.params.shopId;
 
@@ -52,6 +58,12 @@ exports.getAllMasseuses = async (req,res)=>{
 };
 
 exports.deleteMasseuse = async (req,res)=>{
+    if(req.user.role !== 'admin'){
+            return res.status(403).json({
+                success:false,
+                message:"You are not allowed to delete masseuse"
+            });    
+    }
     try{
         const masseuse = await Masseuse.findById(req.params.id);
 
