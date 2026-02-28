@@ -12,9 +12,9 @@ exports.getReservations = async (req, res, next) => {
         });
 
     } else { //if u are admin
-        if(req.params.ShopId){
-            console.log(req.params.ShopId);
-            query=Reservation.find({shop : req.params.ShopId}).populate({
+        if(req.params.shopId){
+            console.log(req.params.shopId);
+            query=Reservation.find({shop : req.params.shopId}).populate({
                 path: 'shop',
             select: 'name address tel openTime closeTime'
             });
@@ -75,11 +75,11 @@ exports.getReservation = async(req,res,next)=>{
 
 exports.addReservation = async(req,res,next)=>{
     try{
-        req.body.shop=req.params.ShopId;
-        const shop = await Shop.findById(req.params.ShopId);
+        req.body.shop=req.params.shopId;
+        const shop = await Shop.findById(req.params.shopId);
 
         if(!shop){
-            return res.status(404).json({success:false,message : `No MassageShop with the id of ${req.params.ShopId}`});
+            return res.status(404).json({success:false,message : `No MassageShop with the id of ${req.params.shopId}`});
         }
         
         //add userId to req.body
