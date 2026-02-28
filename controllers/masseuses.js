@@ -30,3 +30,22 @@ exports.getMasseuses = async(req,res)=>{
    });
    res.json({success:true,data});
 };
+
+exports.getAllMasseuses = async (req,res)=>{
+    try{
+        const masseuses = await Masseuse.find().populate({
+            path:'shop',
+            select:'name address telephone'
+        });
+
+        res.status(200).json({
+            success:true,
+            count: masseuses.length,
+            data: masseuses
+        });
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({success:false});
+    }
+};

@@ -49,6 +49,7 @@ app.use(cors());
 app.use('/api/v1/shops', shops);
 app.use('/api/v1/reservations',reservations);
 app.use('/api/v1/auth' , auth);
+app.use('/api/v1/masseuses', masseuses);
 
 const PORT = process.env.PORT || 5000;
 
