@@ -1,5 +1,6 @@
 const Masseuse = require('../models/Masseuse');
 const Shop = require('../models/Shop');
+const Reservation = require('../models/Reservation');
 
 exports.addMasseuse = async (req,res)=>{
     try{
@@ -42,6 +43,35 @@ exports.getAllMasseuses = async (req,res)=>{
             success:true,
             count: masseuses.length,
             data: masseuses
+        });
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({success:false});
+    }
+};
+
+exports.deleteMasseuse = async (req,res)=>{
+    try{
+        const masseuse = await Masseuse.findById(req.params.id);
+
+        if(!masseuse){
+            return res.status(404).json({
+                success:false,
+                message:"No masseuse found"
+            });
+        }
+        // ใครจองหมอคนนี้ ข้อมูลหมอจะเป็น null แทน
+        await Reservation.updateMany(
+            { masseuse: masseuse._id },
+            { $set: { masseuse: null } }
+        );
+
+        await masseuse.deleteOne();
+
+        res.status(200).json({
+            success:true,
+             message:`Masseuse : ${masseuse.name} (ID: ${masseuse._id}) has been removed`
         });
 
     }catch(err){
