@@ -24,6 +24,9 @@ exports.addMasseuse = async (req,res)=>{
 };
 
 exports.getMasseuses = async(req,res)=>{
-   const data = await Masseuse.find({shop:req.params.shopId});
+   const data = await Masseuse.find({shop:req.params.shopId}).populate({
+        path:'shop',
+        select:'name address telephone'
+   });
    res.json({success:true,data});
 };

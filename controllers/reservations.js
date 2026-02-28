@@ -1,5 +1,6 @@
 const Reservation = require('../models/Reservation');
 const Shop = require('../models/Shop');
+const Masseuse = require('../models/Masseuse');
 //const { patch } = require('../routes/reservations');
 
 exports.getReservations = async (req, res, next) => {
@@ -9,6 +10,9 @@ exports.getReservations = async (req, res, next) => {
         query = Reservation.find({ user: req.user.id }).populate({
             path: 'shop',
             select: 'name address telephone openTime closeTime'
+        }).populate({
+             path: 'masseuse',  
+                select: 'name telephone'
         });
 
     } else { //if u are admin
@@ -17,18 +21,38 @@ exports.getReservations = async (req, res, next) => {
             query=Reservation.find({shop : req.params.shopId}).populate({
                 path: 'shop',
             select: 'name address telephone openTime closeTime'
+            }).populate({
+                path: 'masseuse',
+                select: 'name telephone'
             });
         }else{
             query = Reservation.find().populate({
                 path: 'shop',
             select: 'name address telephone openTime closeTime'
+            }).populate({                 
+                path: 'masseuse',
+                select: 'name telephone'
             });
         }
     }
 
    
     try {
-        const reservations = await query;
+        let reservations = await query;
+
+        reservations = reservations.map(r=>{
+    r = r.toObject();
+
+    return {
+        masseuse: r.masseuse ? r.masseuse : { name: "ไม่ระบุ" },
+        _id: r._id,
+        apptDate: r.apptDate,
+        user: r.user,
+        shop: r.shop,
+        createdAt: r.createdAt,
+        __v: r.__v
+    };
+});
 
         res.status(200).json({
             success: true,
@@ -47,7 +71,7 @@ exports.getReservations = async (req, res, next) => {
 
 exports.getReservation = async(req,res,next)=>{
     try {
-    const reservation = await Reservation.findById(req.params.id).populate({
+    let reservation = await Reservation.findById(req.params.id).populate({
         path: 'shop',
         select: 'name address telephone openTime closeTime'
     }).populate({
@@ -125,7 +149,21 @@ exports.addReservation = async(req,res,next)=>{
 
         }
         const reservation = await Reservation.create(req.body);
- 
+
+        const populatedReservation = await Reservation.findById(reservation._id)
+        .populate({
+            path:'shop',
+            select:'name'
+        })
+        .populate({
+            path:'masseuse',
+            select:'name , telephone'
+        });
+
+        res.status(200).json({
+            success:true,
+            data:populatedReservation
+        });
         res.status(200).json({success:true,data:reservation});
         
     }catch(error){
@@ -150,6 +188,20 @@ exports.updateReservation = async (req, res, next) => {
             return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to update this reservation`});
         }
 
+        if(req.body.masseuse){
+    const masseuse = await Masseuse.findById(req.body.masseuse);
+
+    if(!masseuse){
+        return res.status(404).json({success:false,message:"No masseuse"});
+    }
+
+    if(masseuse.shop.toString() !== reservation.shop.toString()){
+        return res.status(400).json({
+            success:false,
+            message:"Masseuse does not belong to this shop"
+        });
+    }
+}
         reservation = await Reservation.findByIdAndUpdate(
             req.params.id,
             req.body,
