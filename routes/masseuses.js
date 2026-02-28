@@ -1,10 +1,12 @@
 const express = require('express');
-const {addMasseuse} = require('../controllers/masseuses');
-const {protect,authorize} = require('../middleware/auth');
+const router = express.Router({ mergeParams: true });
 
-const router = express.Router({mergeParams:true});
+const { getMasseuses, addMasseuse } = require('../controllers/masseuses');
+const { protect, authorize } = require('../middleware/auth');
 
+// GET masseuses of shop
 router.route('/')
-.post(protect,authorize('admin'),addMasseuse);
+.get(protect, getMasseuses)
+.post(protect, authorize('admin'), addMasseuse);
 
 module.exports = router;
