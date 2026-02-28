@@ -14,7 +14,7 @@ const{protect,authorize} = require('../middleware/auth');
 router.use('/:hospitalId/appointments/',appointmentRouter);
 //const app= express();
 
-router.route('/').get(getHospitals).post(protect,authorize('admin'), createHospital);
-router.route('/:id').get(getHospital).put(protect,authorize('admin'), updateHospital).delete(protect,authorize('admin'), deleteHospital);
+router.route('/').get(getShops).post(protect,authorize('admin'), createShop);
+router.route('/:id').get(getShop).put(protect,authorize('admin'), updateShop).delete(protect,authorize('admin'), deleteShop);
 
 module.exports = router;
