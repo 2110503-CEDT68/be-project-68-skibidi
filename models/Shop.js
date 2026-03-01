@@ -13,7 +13,7 @@ address: {
     type: String,
     required: [true, 'Please add an address']
 },
-tel: {
+telephone: {
     type: String
 },
 openTime: {

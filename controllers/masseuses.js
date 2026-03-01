@@ -2,13 +2,43 @@ const Masseuse = require('../models/Masseuse');
 const Shop = require('../models/Shop');
 const Reservation = require('../models/Reservation');
 
+exports.getSingleMasseuse = async (req,res)=>{
+    try{
+        const masseuse = await Masseuse.findById(req.params.id)
+        .populate({
+            path:'shop',
+            select:'name address telephone'
+        });
+
+        if(!masseuse){
+            return res.status(404).json({
+                success:false,
+                message:"No masseuse found"
+            });
+        }
+
+        res.status(200).json({
+            success:true,
+            data:masseuse
+        });
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({
+            success:false,
+            message:"Server error"
+        });
+    }
+};
+
 exports.addMasseuse = async (req,res)=>{
     if(req.user.role !== 'admin'){
-            return res.status(403).json({
-                success:false,
-                message:"You are not allowed to add masseuse"
-            });    
+        return res.status(403).json({
+            success:false,
+            message:"You are not allowed to add masseuse"
+        });
     }
+
     try{
         req.body.shop = req.params.shopId;
 
@@ -19,9 +49,14 @@ exports.addMasseuse = async (req,res)=>{
 
         const masseuse = await Masseuse.create(req.body);
 
+        const populated = await masseuse.populate({
+            path:'shop',
+            select:'name '
+        });
+
         res.status(200).json({
             success:true,
-            data:masseuse
+            data: populated
         });
 
     }catch(err){
@@ -117,6 +152,13 @@ exports.updateMasseuse = async (req,res)=>{
         }
 
         if(req.body.shop){
+            
+            if(masseuse.shop.toString() === req.body.shop){
+                return res.status(400).json({
+                    success:false,
+                    message:"This masseuse is already in this shop"
+                });
+            }
             const shop = await Shop.findById(req.body.shop);
             if(!shop){
                 return res.status(404).json({

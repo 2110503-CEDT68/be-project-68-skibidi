@@ -164,7 +164,7 @@ exports.addReservation = async(req,res,next)=>{
             success:true,
             data:populatedReservation
         });
-        res.status(200).json({success:true,data:reservation});
+       
         
     }catch(error){
         console.log(error);
