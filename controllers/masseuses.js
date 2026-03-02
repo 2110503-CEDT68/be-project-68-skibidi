@@ -70,7 +70,9 @@ exports.getMasseuses = async(req,res)=>{
         path:'shop',
         select:'name address telephone'
    });
-   res.json({success:true,data});
+   res.json({success:true,
+    count: data.length
+    ,data});
 };
 
 exports.getAllMasseuses = async (req,res)=>{
@@ -152,7 +154,7 @@ exports.updateMasseuse = async (req,res)=>{
         }
 
         if(req.body.shop){
-            
+
             if(masseuse.shop.toString() === req.body.shop){
                 return res.status(400).json({
                     success:false,
