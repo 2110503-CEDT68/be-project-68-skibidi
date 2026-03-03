@@ -6,7 +6,7 @@
 🚀 คำสั่งสำหรับรันการทดสอบ (Execution Command)
 ปัจจุบันระบบถูกตั้งค่าให้รันเฉพาะชุดทดสอบที่ 5 (test5.json) โดยใช้คำสั่งดังนี้:
 
-Bash
+
 newman run test5.json -e env.json
 
 📋 ข้อมูลที่ต้องเตรียมในฐานข้อมูล (Prerequisites)
